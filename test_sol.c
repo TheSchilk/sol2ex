@@ -1,5 +1,4 @@
-//$ START EX 
-// //Include the right header to be able to use printf:
+//$ START EX //Include the right header to be able to use printf:
 // #include ____
 //$ END
 //$ START SOL
