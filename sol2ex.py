@@ -13,7 +13,7 @@ class Block:
 
 if len(sys.argv) != 3:
     print("Incorrect args!")
-    sys.exit()
+    sys.exit(-1)
 
 # Open Solution File and parse blocks
 blocks = [Block('')]
@@ -22,20 +22,20 @@ re_block_start = r'//\$ START ?(\w*)'
 re_block_end = r'//\$ END'
 
 with open(sys.argv[1], 'r') as sol_file:
-    for line_num, line in enumerate(sol_file):
+    for i, line in enumerate(sol_file):
         # Check if the line is a block start:
         block_match = re.search(re_block_start, line)
         if block_match:
             # Make sure the start block has a valid block type:
             block_type = block_match.group(1)
             if block_type != 'SOL' and block_type != 'EX':
-                print('Error on line '+str(line_num)+": Invalid Block type \'" + str(block_type) + "\'!")
-                sys.exit()
+                print('Error on line '+str(i+1)+": Invalid Block type \'" + str(block_type) + "\'!")
+                sys.exit(-1)
 
             # Make sure we are not currently in a block:
             if blocks[-1].block_type != '':
-                print('Error on line '+str(line_num)+": Attempted to open block, but currently in block!")
-                sys.exit()
+                print('Error on line '+str(i+1)+": Attempted to open block, but currently in block!")
+                sys.exit(-1)
 
             # Create a new block:
             blocks.append(Block(block_type))
@@ -45,8 +45,8 @@ with open(sys.argv[1], 'r') as sol_file:
         if re.search(re_block_end, line):
             # Make sure we currently are inside a block:
             if blocks[-1].block_type == '':
-                print('Error on line '+str(line_num)+": Attempted to end block, but currently not in a block!")
-                sys.exit()
+                print('Error on line '+str(i+1)+": Attempted to end block, but currently not in a block!")
+                sys.exit(-1)
 
             # Go to next standard block:
             blocks.append(Block(''))
@@ -57,8 +57,8 @@ with open(sys.argv[1], 'r') as sol_file:
 # Uncomment all EX blocks:
 for block in blocks:
     if block.block_type == 'EX':
-        for line_num, line in enumerate(block.lines):
-            block.lines[line_num] = line.replace('// ', '', 1)
+        for i, line in enumerate(block.lines):
+            block.lines[i] = line.replace('// ', '', 1)
 
 # Generate exercise file:
 with open(sys.argv[2], 'w') as ex_file:
