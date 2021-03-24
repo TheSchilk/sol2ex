@@ -130,3 +130,6 @@ dmypy.json
 
 # Pycharms
 .idea/
+
+# C files, unless I manually add them:
+*.c
