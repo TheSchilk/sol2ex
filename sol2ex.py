@@ -32,11 +32,6 @@ with open(sys.argv[1], 'r') as sol_file:
                 print('Error on line '+str(i+1)+": Invalid Block type \'" + str(block_type) + "\'!")
                 sys.exit(-1)
 
-            # Make sure we are not currently in a block:
-            if blocks[-1].block_type != '':
-                print('Error on line '+str(i+1)+": Attempted to open block, but currently in block!")
-                sys.exit(-1)
-
             # Create a new block:
             blocks.append(Block(block_type))
             continue
@@ -52,6 +47,7 @@ with open(sys.argv[1], 'r') as sol_file:
             blocks.append(Block(''))
             continue
 
+        # Add line to current block.
         blocks[-1].add_line(line)
 
 # Uncomment all EX blocks:
